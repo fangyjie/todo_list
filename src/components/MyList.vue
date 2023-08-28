@@ -1,17 +1,12 @@
 <template>
 	<ul class="todo-main">
-		<MyItem
-			v-for="task in tasks"
-			:key="task.id"
-			:title="task.title"
-			:done="task.done"
-		></MyItem>
+		<MyItem v-for="task in tasks" :key="task.id" :todo="task"></MyItem>
 	</ul>
 </template>
 
 <script>
-	import { reactive } from "vue";
 	import MyItem from "./MyItem.vue";
+	import { useListStore } from "../stores/list";
 
 	export default {
 		name: "MyList",
@@ -19,11 +14,8 @@
 			MyItem,
 		},
 		setup() {
-			let tasks = reactive([
-				{ id: "001", title: "打代码", done: false },
-				{ id: "002", title: "睡觉", done: false },
-				{ id: "003", title: "吃饭", done: false },
-			]);
+			const store = useListStore();
+			let tasks = store.tasks;
 
 			return { tasks };
 		},

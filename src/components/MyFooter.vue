@@ -1,24 +1,38 @@
 <template>
 	<div class="todo-footer">
 		<label>
-			<input type="checkbox" />
+			<input type="checkbox" v-model="store.all" />
 		</label>
 		<span>
 			<span>已完成{{ finNum }}</span> / 全部{{ allNum }}
 		</span>
-		<button class="btn btn-danger">清除已完成任务</button>
+		<button class="btn btn-danger" @click="store.clear">
+			清除已完成任务
+		</button>
 	</div>
 </template>
 
 <script>
-	import { ref } from "vue";
+	import { computed } from "vue";
+	import { useListStore } from "../stores/list";
+
 	export default {
 		name: "MyFooter",
 		setup() {
-			let finNum = ref(0);
-			let allNum = ref(3);
+			const store = useListStore();
 
-			return { finNum, allNum };
+			let finNum = computed(() => {
+				let count = 0;
+				for (const task of store.tasks) {
+					if (task.done === true) count++;
+				}
+				return count;
+			});
+			let allNum = computed(() => {
+				return store.tasks.length;
+			});
+
+			return { finNum, allNum, store };
 		},
 	};
 </script>

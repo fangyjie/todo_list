@@ -1,18 +1,28 @@
 <template>
 	<li>
 		<label>
-			<input type="checkbox" v-model="done" />
-			<span v-show="!isEdit">{{ title }}</span>
+			<input
+				type="checkbox"
+				:checked="todo.done"
+				@change="store.editDo(todo.id)"
+			/>
+			<span v-show="!todo.isEdit">{{ todo.title }}</span>
 			<input
 				type="text"
-				v-show="isEdit"
-				v-model="title"
-				@blur="isEdit = false"
+				v-show="todo.isEdit"
+				v-model="dotask"
+				@blur="editTask(todo.id, dotask)"
 				ref="getFocus"
 			/>
 		</label>
-		<button class="btn btn-danger">删除</button>
-		<button class="btn btn-edit" v-show="!isEdit" @click="editTask">
+		<button class="btn btn-danger" @click="store.deleteTask(todo.id)">
+			删除
+		</button>
+		<button
+			class="btn btn-edit"
+			v-show="!todo.isEdit"
+			@click="edit(todo.id)"
+		>
 			编辑
 		</button>
 	</li>
@@ -20,23 +30,34 @@
 
 <script>
 	import { ref, nextTick } from "vue";
+	import { useListStore } from "../stores/list";
+
 	export default {
 		name: "MyItem",
-		props: ["title", "done"],
+		props: ["todo"],
 		setup(props) {
-			let title = ref(props.title);
-			let done = ref(props.done);
-			let isEdit = ref(false);
+			const store = useListStore();
+			const dotask = ref(props.todo.title);
 			const getFocus = ref(null);
 
-			function editTask() {
-				isEdit.value = true;
+			function edit(id) {
+				for (const task of store.tasks) {
+					if (task.id === id) task.isEdit = true;
+				}
 				nextTick(() => {
 					getFocus.value.focus();
 				});
 			}
+			function editTask(id, val) {
+				for (const task of store.tasks) {
+					if (task.id === id) {
+						task.isEdit = false;
+						task.title = val;
+					}
+				}
+			}
 
-			return { title, done, isEdit, getFocus, editTask };
+			return { dotask, getFocus, store, edit, editTask };
 		},
 	};
 </script>

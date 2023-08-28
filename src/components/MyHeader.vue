@@ -4,19 +4,28 @@
 			type="text"
 			placeholder="请输入你的任务名称，按回车键确认"
 			v-model="task"
+			@keyup.enter="addTask(task)"
 		/>
 	</div>
 </template>
 
 <script>
 	import { ref } from "vue";
+	import { useListStore } from "../stores/list";
 	export default {
 		name: "MyHeader",
 		setup() {
 			let task = ref("");
+			const store = useListStore();
+
+			function addTask(val) {
+				store.addTask(val);
+				task.value = "";
+			}
 
 			return {
 				task,
+				addTask,
 			};
 		},
 	};
