@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive } from "vue";
 import { nanoid } from "nanoid";
 
 export const useListStore = defineStore("list", () => {
