@@ -36,12 +36,6 @@ export const useListStore = defineStore("list", () => {
 			if (task.id === id) task.done = !task.done;
 		}
 	}
-	// function allDo() {
-	// 	all.value = !all.value;
-	// 	for (const task of tasks) {
-	// 		task.done = all.value ? true : false;
-	// 	}
-	// }
 	function editTask(id, val) {
 		isEdit = false;
 		for (const task of tasks) {
