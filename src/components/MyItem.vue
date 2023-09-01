@@ -4,14 +4,14 @@
 			<input
 				type="checkbox"
 				:checked="todo.done"
-				@change="store.editDo(todo.id)"
+				@change="store.updateDo(todo.id)"
 			/>
 			<span v-show="!todo.isEdit">{{ todo.title }}</span>
 			<input
 				type="text"
 				v-show="todo.isEdit"
 				v-model="dotask"
-				@blur="editTask(todo.id, dotask)"
+				@blur="store.updateTask(todo.id, dotask)"
 				ref="getFocus"
 			/>
 		</label>
@@ -41,23 +41,13 @@
 			const getFocus = ref(null);
 
 			function edit(id) {
-				for (const task of store.tasks) {
-					if (task.id === id) task.isEdit = true;
-				}
+				store.edit(id);
 				nextTick(() => {
 					getFocus.value.focus();
 				});
 			}
-			function editTask(id, val) {
-				for (const task of store.tasks) {
-					if (task.id === id) {
-						task.isEdit = false;
-						task.title = val;
-					}
-				}
-			}
 
-			return { dotask, getFocus, store, edit, editTask };
+			return { dotask, getFocus, store, edit };
 		},
 	};
 </script>

@@ -1,10 +1,10 @@
 <template>
 	<div class="todo-footer">
 		<label>
-			<input type="checkbox" v-model="store.all" />
+			<input type="checkbox" v-model="store.allDo" />
 		</label>
 		<span>
-			<span>已完成{{ finNum }}</span> / 全部{{ allNum }}
+			<span>已完成{{ store.finNum }}</span> / 全部{{ store.allNum }}
 		</span>
 		<button class="btn btn-danger" @click="store.clear">
 			清除已完成任务
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-	import { computed } from "vue";
 	import { useListStore } from "../stores/list";
 
 	export default {
@@ -21,18 +20,7 @@
 		setup() {
 			const store = useListStore();
 
-			let finNum = computed(() => {
-				let count = 0;
-				for (const task of store.tasks) {
-					if (task.done === true) count++;
-				}
-				return count;
-			});
-			let allNum = computed(() => {
-				return store.tasks.length;
-			});
-
-			return { finNum, allNum, store };
+			return { store };
 		},
 	};
 </script>
