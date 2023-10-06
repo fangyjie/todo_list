@@ -1,3 +1,3 @@
-<h1>Vue3+Vite+Pinia</h1>
+<h1>Vue3 + Vite + Pinia</h1>
 
-<p>The first project I do completely</p>
+<p>This is the first project I've done on my own</p>
